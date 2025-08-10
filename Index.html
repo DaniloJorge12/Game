@@ -52,13 +52,9 @@
 
         <!-- Main Content - Dynamic Sections -->
         <main class="flex-grow container mx-auto p-4">
-            <!-- Login Section -->
-            <section id="login-section" class="max-w-md mx-auto mt-10 bg-white rounded-lg shadow-lg p-6 text-center">
+            <!-- Room Selection Section -->
+            <section id="room-section" class="max-w-md mx-auto mt-10 bg-white rounded-lg shadow-lg p-6 text-center">
                 <h2 class="text-2xl font-bold text-green-700 mb-6">Bem-vindo ao Green Team Wins!</h2>
-                <div class="mb-4">
-                    <label for="nickname" class="block text-gray-700 mb-2">Escolha seu apelido:</label>
-                    <input type="text" id="nickname" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" maxlength="20" placeholder="Ex: Jogador123">
-                </div>
                 <div class="flex flex-col space-y-3">
                     <button id="create-room-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition">
                         <i class="fas fa-plus mr-2"></i> Criar Nova Sala
@@ -70,6 +66,18 @@
                         </button>
                     </div>
                 </div>
+            </section>
+
+            <!-- Nickname Section -->
+            <section id="nickname-section" class="hidden max-w-md mx-auto mt-10 bg-white rounded-lg shadow-lg p-6 text-center">
+                <h2 class="text-2xl font-bold text-green-700 mb-6">Entre na Sala</h2>
+                <div class="mb-4">
+                    <label for="nickname" class="block text-gray-700 mb-2">Escolha seu apelido:</label>
+                    <input type="text" id="nickname" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" maxlength="20" placeholder="Ex: Jogador123">
+                </div>
+                <button id="confirm-nickname-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                    Confirmar Apelido
+                </button>
             </section>
 
             <!-- Lobby Section -->
@@ -173,6 +181,22 @@
     </div>
 
     <script>
+        // WebSocket connection
+        const socket = new WebSocket('wss://your-websocket-server.com'); // Substitua pelo seu servidor WebSocket
+        
+        socket.onopen = function() {
+            console.log('Conexão WebSocket estabelecida');
+        };
+        
+        socket.onmessage = function(event) {
+            const message = JSON.parse(event.data);
+            handleWebSocketMessage(message);
+        };
+        
+        socket.onclose = function() {
+            console.log('Conexão WebSocket fechada');
+        };
+        
         // Game State
         const gameState = {
             currentScreen: 'login',
@@ -241,16 +265,56 @@
         const finalScores = document.getElementById('final-scores');
         const playAgainBtn = document.getElementById('play-again-btn');
 
+        // DOM Elements
+        const roomSection = document.getElementById('room-section');
+        const nicknameSection = document.getElementById('nickname-section');
+        const confirmNicknameBtn = document.getElementById('confirm-nickname-btn');
+
         // Event Listeners
-        document.getElementById('create-room-btn').addEventListener('click', createRoom);
-        document.getElementById('join-room-btn').addEventListener('click', joinRoom);
+        document.getElementById('create-room-btn').addEventListener('click', () => showScreen('nickname'));
+        document.getElementById('join-room-btn').addEventListener('click', () => showScreen('nickname'));
+        confirmNicknameBtn.addEventListener('click', confirmNickname);
         startGameBtn.addEventListener('click', startGame);
         logoutBtn.addEventListener('click', logout);
         submitAnswerBtn.addEventListener('click', submitAnswer);
         playAgainBtn.addEventListener('click', resetGame);
 
         // Functions
-        function createRoom() {
+        function handleWebSocketMessage(message) {
+            switch (message.type) {
+                case 'room_created':
+                    gameState.roomCode = message.roomCode;
+                    gameState.isHost = true;
+                    updateUI();
+                    showScreen('lobby');
+                    break;
+                    
+                case 'player_joined':
+                    gameState.players = message.players;
+                    updateUI();
+                    break;
+                    
+                case 'game_started':
+                    gameState.players = message.players;
+                    startGame();
+                    break;
+                    
+                case 'question_received':
+                    gameState.currentQuestion = message.question;
+                    displayQuestion();
+                    break;
+                    
+                case 'answer_result':
+                    // Processar resultado da resposta
+                    break;
+                    
+                case 'game_ended':
+                    endGame();
+                    break;
+            }
+        }
+
+        function confirmNickname() {
             const nickname = nicknameInput.value.trim();
             if (!nickname) {
                 alert('Por favor, escolha um apelido!');
@@ -258,15 +322,22 @@
             }
             
             gameState.nickname = nickname;
-            gameState.roomCode = generateRoomCode();
-            gameState.isHost = true;
-            gameState.players = [{ nickname, score: 0, team: null }];
             
-            updateUI();
-            showScreen('lobby');
-            
-            // In a real app, you would send this to a server
-            console.log(`Sala criada: ${gameState.roomCode}`);
+            if (document.getElementById('create-room-btn').contains(event.target)) {
+                // Criar sala
+                socket.send(JSON.stringify({
+                    type: 'create_room',
+                    nickname: nickname
+                }));
+            } else {
+                // Entrar em sala existente
+                const roomCode = roomCodeInput.value.trim().toUpperCase();
+                socket.send(JSON.stringify({
+                    type: 'join_room',
+                    roomCode: roomCode,
+                    nickname: nickname
+                }));
+            }
         }
 
         function joinRoom() {
@@ -310,14 +381,14 @@
                 return;
             }
             
-            // Assign random teams to start
-            gameState.players.forEach(player => {
-                player.team = Math.random() < 0.5 ? 'green' : 'orange';
-                player.score = 0;
-            });
+            if (gameState.isHost) {
+                socket.send(JSON.stringify({
+                    type: 'start_game',
+                    roomCode: gameState.roomCode
+                }));
+            }
             
             showScreen('game');
-            startRound();
         }
 
         function startRound() {
@@ -633,14 +704,18 @@
         function showScreen(screen) {
             gameState.currentScreen = screen;
             
-            loginSection.classList.add('hidden');
+            roomSection.classList.add('hidden');
+            nicknameSection.classList.add('hidden');
             lobbySection.classList.add('hidden');
             gameSection.classList.add('hidden');
             resultsSection.classList.add('hidden');
             
             switch (screen) {
-                case 'login':
-                    loginSection.classList.remove('hidden');
+                case 'room':
+                    roomSection.classList.remove('hidden');
+                    break;
+                case 'nickname':
+                    nicknameSection.classList.remove('hidden');
                     break;
                 case 'lobby':
                     lobbySection.classList.remove('hidden');
@@ -655,7 +730,7 @@
         }
 
         // Initialize
-        showScreen('login');
+        showScreen('room');
     </script>
 </body>
 </html>

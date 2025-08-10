@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Team Wins</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .team-green {
+            background-color: #4ade80;
+            border-color: #16a34a;
+        }
+        .team-orange {
+            background-color: #fb923c;
+            border-color: #ea580c;
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Main Container -->
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-green-600 text-white p-4 shadow-md">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-2xl md:text-3xl font-bold">
+                    <i class="fas fa-leaf mr-2"></i> Green Team Wins
+                </h1>
+                <div id="user-info" class="hidden">
+                    <span id="username-display" class="font-semibold"></span>
+                    <button id="logout-btn" class="ml-2 px-2 py-1 bg-white text-green-600 rounded text-sm">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content - Dynamic Sections -->
+        <main class="flex-grow container mx-auto p-4">
+            <!-- Login Section -->
+            <section id="login-section" class="max-w-md mx-auto mt-10 bg-white rounded-lg shadow-lg p-6 text-center">
+                <h2 class="text-2xl font-bold text-green-700 mb-6">Bem-vindo ao Green Team Wins!</h2>
+                <div class="mb-4">
+                    <label for="nickname" class="block text-gray-700 mb-2">Escolha seu apelido:</label>
+                    <input type="text" id="nickname" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" maxlength="20" placeholder="Ex: Jogador123">
+                </div>
+                <div class="flex flex-col space-y-3">
+                    <button id="create-room-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                        <i class="fas fa-plus mr-2"></i> Criar Nova Sala
+                    </button>
+                    <div class="relative">
+                        <input type="text" id="room-code" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Código da Sala">
+                        <button id="join-room-btn" class="absolute right-0 top-0 h-full bg-green-600 hover:bg-green-700 text-white px-4 rounded-r-lg">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lobby Section -->
+            <section id="lobby-section" class="hidden max-w-md mx-auto mt-10 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-green-700 mb-4">Sala: <span id="room-code-display" class="font-mono"></span></h2>
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-2">Jogadores na sala:</h3>
+                    <div id="players-list" class="space-y-2">
+                        <!-- Players will be added here dynamically -->
+                    </div>
+                </div>
+                <div class="text-center">
+                    <p class="text-gray-600 mb-4"><span id="player-count">1</span>/10 jogadores</p>
+                    <button id="start-game-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        Iniciar Jogo
+                    </button>
+                </div>
+            </section>
+
+            <!-- Game Section -->
+            <section id="game-section" class="hidden max-w-3xl mx-auto mt-6">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <!-- Game Header -->
+                    <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
+                        <div>
+                            <span class="font-bold">Rodada: <span id="current-round">1</span>/15</span>
+                            <span class="mx-3">|</span>
+                            <span id="timer" class="font-mono">30s</span>
+                        </div>
+                        <div id="team-indicator" class="px-3 py-1 rounded-full font-bold">
+                            Time: <span id="team-name">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Question Area -->
+                    <div class="p-6 border-b">
+                        <h3 id="question-text" class="text-xl font-semibold mb-4 text-center">Carregando pergunta...</h3>
+                        
+                        <!-- Multiple Choice Options -->
+                        <div id="multiple-choice-options" class="grid grid-cols-1 md:grid-cols-2 gap-3 hidden">
+                            <!-- Options will be added here dynamically -->
+                        </div>
+                        
+                        <!-- Fill in the Blank -->
+                        <div id="fill-blank-option" class="hidden">
+                            <input type="text" id="blank-answer" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Digite sua resposta...">
+                        </div>
+                        
+                        <!-- This or That -->
+                        <div id="this-or-that-options" class="flex justify-center gap-4 hidden">
+                            <button class="choice-btn px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-bold">
+                                <span id="option1">Opção 1</span>
+                            </button>
+                            <button class="choice-btn px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-bold">
+                                <span id="option2">Opção 2</span>
+                            </button>
+                        </div>
+                        
+                        <div class="mt-6 text-center">
+                            <button id="submit-answer-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg disabled:opacity-50">
+                                Enviar Resposta
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Scoreboard -->
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-3">Placar</h3>
+                        <div id="scoreboard" class="space-y-2">
+                            <!-- Player scores will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="results-section" class="hidden max-w-md mx-auto mt-10 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-green-700 mb-6 text-center">Fim do Jogo!</h2>
+                <div id="winner-display" class="mb-6 p-4 rounded-lg text-center pulse-animation">
+                    <p class="text-lg font-semibold">Vencedor:</p>
+                    <p id="winner-name" class="text-2xl font-bold"></p>
+                </div>
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Classificação Final:</h3>
+                    <div id="final-scores" class="space-y-2">
+                        <!-- Final scores will be added here dynamically -->
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button id="play-again-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">
+                        Jogar Novamente
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white p-4 text-center">
+            <p>Green Team Wins &copy; 2023 - Um jogo de respostas colaborativas</p>
+        </footer>
+    </div>
+
+    <script>
+        // Game State
+        const gameState = {
+            currentScreen: 'login',
+            nickname: '',
+            roomCode: '',
+            players: [],
+            isHost: false,
+            currentQuestion: {},
+            hasAnswered: false,
+            currentRound: 1,
+            maxRounds: 15,
+            timer: 30,
+            timerInterval: null,
+            team: null,
+            score: 0
+        };
+
+        // Sample questions (in a real app, these would come from a server)
+        const questions = [
+            {
+                type: 'multiple-choice',
+                text: 'Qual é a capital da França?',
+                options: ['Londres', 'Paris', 'Berlim', 'Madri'],
+                correctAnswer: 'Paris'
+            },
+            {
+                type: 'this-or-that',
+                text: 'Você prefere:',
+                option1: 'Praia',
+                option2: 'Montanha'
+            },
+            {
+                type: 'fill-blank',
+                text: 'Complete: O maior planeta do sistema solar é __________.',
+                correctAnswer: 'Júpiter'
+            },
+            // More questions...
+        ];
+
+        // DOM Elements
+        const loginSection = document.getElementById('login-section');
+        const lobbySection = document.getElementById('lobby-section');
+        const gameSection = document.getElementById('game-section');
+        const resultsSection = document.getElementById('results-section');
+        const nicknameInput = document.getElementById('nickname');
+        const roomCodeInput = document.getElementById('room-code');
+        const roomCodeDisplay = document.getElementById('room-code-display');
+        const playersList = document.getElementById('players-list');
+        const playerCount = document.getElementById('player-count');
+        const startGameBtn = document.getElementById('start-game-btn');
+        const usernameDisplay = document.getElementById('username-display');
+        const userInfo = document.getElementById('user-info');
+        const logoutBtn = document.getElementById('logout-btn');
+        const questionText = document.getElementById('question-text');
+        const multipleChoiceOptions = document.getElementById('multiple-choice-options');
+        const fillBlankOption = document.getElementById('fill-blank-option');
+        const thisOrThatOptions = document.getElementById('this-or-that-options');
+        const submitAnswerBtn = document.getElementById('submit-answer-btn');
+        const currentRoundDisplay = document.getElementById('current-round');
+        const timerDisplay = document.getElementById('timer');
+        const teamIndicator = document.getElementById('team-indicator');
+        const teamNameDisplay = document.getElementById('team-name');
+        const scoreboard = document.getElementById('scoreboard');
+        const winnerDisplay = document.getElementById('winner-display');
+        const winnerName = document.getElementById('winner-name');
+        const finalScores = document.getElementById('final-scores');
+        const playAgainBtn = document.getElementById('play-again-btn');
+
+        // Event Listeners
+        document.getElementById('create-room-btn').addEventListener('click', createRoom);
+        document.getElementById('join-room-btn').addEventListener('click', joinRoom);
+        startGameBtn.addEventListener('click', startGame);
+        logoutBtn.addEventListener('click', logout);
+        submitAnswerBtn.addEventListener('click', submitAnswer);
+        playAgainBtn.addEventListener('click', resetGame);
+
+        // Functions
+        function createRoom() {
+            const nickname = nicknameInput.value.trim();
+            if (!nickname) {
+                alert('Por favor, escolha um apelido!');
+                return;
+            }
+            
+            gameState.nickname = nickname;
+            gameState.roomCode = generateRoomCode();
+            gameState.isHost = true;
+            gameState.players = [{ nickname, score: 0, team: null }];
+            
+            updateUI();
+            showScreen('lobby');
+            
+            // In a real app, you would send this to a server
+            console.log(`Sala criada: ${gameState.roomCode}`);
+        }
+
+        function joinRoom() {
+            const nickname = nicknameInput.value.trim();
+            const roomCode = roomCodeInput.value.trim().toUpperCase();
+            
+            if (!nickname) {
+                alert('Por favor, escolha um apelido!');
+                return;
+            }
+            
+            if (!roomCode) {
+                alert('Por favor, insira o código da sala!');
+                return;
+            }
+            
+            gameState.nickname = nickname;
+            gameState.roomCode = roomCode;
+            gameState.isHost = false;
+            
+            // In a real app, you would check with the server if the room exists
+            // For this demo, we'll just assume it exists
+            gameState.players = [
+                { nickname: 'HostPlayer', score: 0, team: 'green' },
+                { nickname, score: 0, team: null }
+            ];
+            
+            updateUI();
+            showScreen('lobby');
+            
+            console.log(`Entrou na sala: ${roomCode}`);
+        }
+
+        function generateRoomCode() {
+            return Math.random().toString(36).substring(2, 6).toUpperCase();
+        }
+
+        function startGame() {
+            if (gameState.players.length < 2) {
+                alert('Espere por mais jogadores!');
+                return;
+            }
+            
+            // Assign random teams to start
+            gameState.players.forEach(player => {
+                player.team = Math.random() < 0.5 ? 'green' : 'orange';
+                player.score = 0;
+            });
+            
+            showScreen('game');
+            startRound();
+        }
+
+        function startRound() {
+            gameState.hasAnswered = false;
+            gameState.currentRound++;
+            
+            if (gameState.currentRound > gameState.maxRounds) {
+                endGame();
+                return;
+            }
+            
+            // Get a random question
+            gameState.currentQuestion = questions[Math.floor(Math.random() * questions.length)];
+            
+            // Reset timer
+            gameState.timer = 30;
+            updateTimerDisplay();
+            
+            // Clear any previous timer
+            if (gameState.timerInterval) {
+                clearInterval(gameState.timerInterval);
+            }
+            
+            // Start new timer
+            gameState.timerInterval = setInterval(() => {
+                gameState.timer--;
+                updateTimerDisplay();
+                
+                if (gameState.timer <= 0) {
+                    clearInterval(gameState.timerInterval);
+                    if (!gameState.hasAnswered) {
+                        // Auto-submit empty answer if time runs out
+                        submitAnswer();
+                    }
+                }
+            }, 1000);
+            
+            displayQuestion();
+            updateUI();
+        }
+
+        function displayQuestion() {
+            questionText.textContent = gameState.currentQuestion.text;
+            
+            // Hide all question types first
+            multipleChoiceOptions.classList.add('hidden');
+            fillBlankOption.classList.add('hidden');
+            thisOrThatOptions.classList.add('hidden');
+            
+            // Show the appropriate question type
+            switch (gameState.currentQuestion.type) {
+                case 'multiple-choice':
+                    multipleChoiceOptions.innerHTML = '';
+                    gameState.currentQuestion.options.forEach((option, index) => {
+                        const button = document.createElement('button');
+                        button.className = 'choice-btn p-3 bg-gray-200 hover:bg-gray-300 rounded-lg text-left';
+                        button.textContent = option;
+                        button.dataset.answer = option;
+                        button.addEventListener('click', () => selectAnswer(option));
+                        multipleChoiceOptions.appendChild(button);
+                    });
+                    multipleChoiceOptions.classList.remove('hidden');
+                    break;
+                    
+                case 'fill-blank':
+                    document.getElementById('blank-answer').value = '';
+                    fillBlankOption.classList.remove('hidden');
+                    break;
+                    
+                case 'this-or-that':
+                    document.getElementById('option1').textContent = gameState.currentQuestion.option1;
+                    document.getElementById('option2').textContent = gameState.currentQuestion.option2;
+                    thisOrThatOptions.classList.remove('hidden');
+                    break;
+            }
+            
+            submitAnswerBtn.disabled = false;
+        }
+
+        function selectAnswer(answer) {
+            // For multiple choice, highlight the selected answer
+            document.querySelectorAll('.choice-btn').forEach(btn => {
+                btn.classList.remove('bg-green-500', 'text-white');
+            });
+            
+            if (answer) {
+                event.target.classList.add('bg-green-500', 'text-white');
+            }
+        }
+
+        function submitAnswer() {
+            if (gameState.hasAnswered) return;
+            
+            let answer;
+            
+            switch (gameState.currentQuestion.type) {
+                case 'multiple-choice':
+                    const selected = document.querySelector('.choice-btn.bg-green-500');
+                    if (!selected) {
+                        alert('Selecione uma opção!');
+                        return;
+                    }
+                    answer = selected.dataset.answer;
+                    break;
+                    
+                case 'fill-blank':
+                    answer = document.getElementById('blank-answer').value.trim();
+                    if (!answer) {
+                        alert('Digite sua resposta!');
+                        return;
+                    }
+                    break;
+                    
+                case 'this-or-that':
+                    if (!event.target.classList.contains('choice-btn')) {
+                        alert('Selecione uma opção!');
+                        return;
+                    }
+                    answer = event.target.textContent.trim();
+                    break;
+            }
+            
+            gameState.hasAnswered = true;
+            submitAnswerBtn.disabled = true;
+            clearInterval(gameState.timerInterval);
+            
+            // In a real app, this would be sent to the server
+            console.log(`Resposta enviada: ${answer}`);
+            
+            // Simulate server response after a delay
+            setTimeout(() => {
+                // Randomly determine if the player is on the green team
+                const isGreenTeam = Math.random() < 0.5;
+                gameState.team = isGreenTeam ? 'green' : 'orange';
+                
+                // Random points (1 or 2)
+                const pointsEarned = Math.floor(Math.random() * 2) + 1;
+                
+                // Update player's score
+                const player = gameState.players.find(p => p.nickname === gameState.nickname);
+                if (player) {
+                    player.team = gameState.team;
+                    player.score += pointsEarned;
+                }
+                
+                updateUI();
+                
+                // Move to next round after a delay
+                setTimeout(startRound, 3000);
+            }, 1500);
+        }
+
+        function endGame() {
+            showScreen('results');
+            
+            // Determine winner
+            gameState.players.sort((a, b) => b.score - a.score);
+            const winner = gameState.players[0];
+            
+            // Display winner
+            winnerName.textContent = winner.nickname;
+            winnerDisplay.className = winner.team === 'green' ? 
+                'mb-6 p-4 rounded-lg text-center pulse-animation team-green' : 
+                'mb-6 p-4 rounded-lg text-center pulse-animation team-orange';
+            
+            // Display final scores
+            finalScores.innerHTML = '';
+            gameState.players.forEach((player, index) => {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = `flex justify-between items-center p-2 rounded-lg ${index === 0 ? 'bg-yellow-100 font-bold' : 'bg-gray-100'}`;
+                
+                const rank = document.createElement('span');
+                rank.className = 'font-semibold';
+                rank.textContent = `#${index + 1}`;
+                
+                const name = document.createElement('span');
+                name.textContent = player.nickname;
+                
+                const score = document.createElement('span');
+                score.className = 'font-semibold';
+                score.textContent = player.score;
+                
+                playerDiv.appendChild(rank);
+                playerDiv.appendChild(name);
+                playerDiv.appendChild(score);
+                finalScores.appendChild(playerDiv);
+            });
+        }
+
+        function resetGame() {
+            gameState.currentRound = 0;
+            gameState.score = 0;
+            gameState.team = null;
+            
+            if (gameState.isHost) {
+                showScreen('lobby');
+            } else {
+                logout();
+            }
+        }
+
+        function logout() {
+            gameState.nickname = '';
+            gameState.roomCode = '';
+            gameState.players = [];
+            gameState.isHost = false;
+            
+            nicknameInput.value = '';
+            roomCodeInput.value = '';
+            
+            showScreen('login');
+        }
+
+        function updateUI() {
+            // Update user info display
+            if (gameState.nickname) {
+                usernameDisplay.textContent = gameState.nickname;
+                userInfo.classList.remove('hidden');
+            } else {
+                userInfo.classList.add('hidden');
+            }
+            
+            // Update lobby display
+            if (gameState.currentScreen === 'lobby') {
+                roomCodeDisplay.textContent = gameState.roomCode;
+                playerCount.textContent = gameState.players.length;
+                
+                playersList.innerHTML = '';
+                gameState.players.forEach(player => {
+                    const playerDiv = document.createElement('div');
+                    playerDiv.className = 'flex items-center p-2 bg-gray-100 rounded-lg';
+                    
+                    const icon = document.createElement('i');
+                    icon.className = 'fas fa-user mr-2 text-gray-600';
+                    
+                    const name = document.createElement('span');
+                    name.textContent = player.nickname;
+                    
+                    if (player.nickname === gameState.nickname) {
+                        name.className = 'font-semibold';
+                    }
+                    
+                    playerDiv.appendChild(icon);
+                    playerDiv.appendChild(name);
+                    playersList.appendChild(playerDiv);
+                });
+                
+                startGameBtn.disabled = !gameState.isHost;
+            }
+            
+            // Update game display
+            if (gameState.currentScreen === 'game') {
+                currentRoundDisplay.textContent = gameState.currentRound;
+                
+                // Update team indicator
+                if (gameState.team) {
+                    teamNameDisplay.textContent = gameState.team === 'green' ? 'Verde' : 'Laranja';
+                    teamIndicator.className = gameState.team === 'green' ? 
+                        'px-3 py-1 rounded-full font-bold team-green' : 
+                        'px-3 py-1 rounded-full font-bold team-orange';
+                } else {
+                    teamNameDisplay.textContent = '-';
+                    teamIndicator.className = 'px-3 py-1 rounded-full font-bold bg-gray-300';
+                }
+                
+                // Update scoreboard
+                scoreboard.innerHTML = '';
+                const sortedPlayers = [...gameState.players].sort((a, b) => b.score - a.score);
+                
+                sortedPlayers.forEach(player => {
+                    const playerDiv = document.createElement('div');
+                    playerDiv.className = 'flex justify-between items-center p-2 rounded-lg';
+                    
+                    const leftDiv = document.createElement('div');
+                    leftDiv.className = 'flex items-center';
+                    
+                    const teamIndicator = document.createElement('div');
+                    teamIndicator.className = `w-3 h-3 rounded-full mr-2 ${player.team === 'green' ? 'bg-green-500' : 'bg-orange-500'}`;
+                    
+                    const name = document.createElement('span');
+                    name.textContent = player.nickname;
+                    if (player.nickname === gameState.nickname) {
+                        name.className = 'font-semibold';
+                    }
+                    
+                    const score = document.createElement('span');
+                    score.className = 'font-semibold';
+                    score.textContent = player.score;
+                    
+                    leftDiv.appendChild(teamIndicator);
+                    leftDiv.appendChild(name);
+                    
+                    playerDiv.appendChild(leftDiv);
+                    playerDiv.appendChild(score);
+                    scoreboard.appendChild(playerDiv);
+                });
+            }
+        }
+
+        function updateTimerDisplay() {
+            timerDisplay.textContent = `${gameState.timer}s`;
+            
+            // Change color when time is running out
+            if (gameState.timer <= 10) {
+                timerDisplay.className = 'font-mono text-red-500';
+            } else if (gameState.timer <= 20) {
+                timerDisplay.className = 'font-mono text-yellow-500';
+            } else {
+                timerDisplay.className = 'font-mono';
+            }
+        }
+
+        function showScreen(screen) {
+            gameState.currentScreen = screen;
+            
+            loginSection.classList.add('hidden');
+            lobbySection.classList.add('hidden');
+            gameSection.classList.add('hidden');
+            resultsSection.classList.add('hidden');
+            
+            switch (screen) {
+                case 'login':
+                    loginSection.classList.remove('hidden');
+                    break;
+                case 'lobby':
+                    lobbySection.classList.remove('hidden');
+                    break;
+                case 'game':
+                    gameSection.classList.remove('hidden');
+                    break;
+                case 'results':
+                    resultsSection.classList.remove('hidden');
+                    break;
+            }
+        }
+
+        // Initialize
+        showScreen('login');
+    </script>
+</body>
+</html>

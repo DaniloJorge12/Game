@@ -2,23 +2,21 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Green Team Wins</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Green Team Wins - Jogo Completo</title>
   <style>
-    /* Tailwind-like minimal styles */
+    /* ====== CSS básico inspirado em Tailwind ====== */
     body {
       background-color: #f3f4f6;
-      font-family: sans-serif;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      display: flex; flex-direction: column; min-height: 100vh;
     }
     header {
       background-color: #16a34a;
       color: white;
       padding: 1rem;
-      box-shadow: 0 2px 4px rgb(0 0 0 / 0.1);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     header .container {
       max-width: 1024px;
@@ -72,7 +70,7 @@
     section {
       background: white;
       border-radius: 0.5rem;
-      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 1.5rem;
       max-width: 400px;
       margin: 1rem auto;
@@ -138,32 +136,6 @@
     .font-mono {
       font-family: monospace, monospace;
     }
-    .font-semibold {
-      font-weight: 600;
-    }
-    .text-gray-600 {
-      color: #4b5563;
-    }
-    .bg-gray-100 {
-      background-color: #f3f4f6;
-    }
-    .bg-green-600 {
-      background-color: #16a34a;
-    }
-    .bg-green-700 {
-      background-color: #15803d;
-    }
-    .bg-yellow-100 {
-      background-color: #fef9c3;
-    }
-    .team-green {
-      background-color: #4ade80;
-      border-color: #16a34a;
-    }
-    .team-orange {
-      background-color: #fb923c;
-      border-color: #ea580c;
-    }
     .pulse-animation {
       animation: pulse 2s infinite;
     }
@@ -171,187 +143,6 @@
       0% { transform: scale(1); }
       50% { transform: scale(1.05); }
       100% { transform: scale(1); }
-    }
-    .text-center {
-      text-align: center;
-    }
-    .rounded-lg {
-      border-radius: 0.5rem;
-    }
-    .shadow-lg {
-      box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
-    }
-    .p-4 {
-      padding: 1rem;
-    }
-    .p-6 {
-      padding: 1.5rem;
-    }
-    .mb-4 {
-      margin-bottom: 1rem;
-    }
-    .mb-6 {
-      margin-bottom: 1.5rem;
-    }
-    .font-bold {
-      font-weight: 700;
-    }
-    .text-lg {
-      font-size: 1.125rem;
-    }
-    .text-xl {
-      font-size: 1.25rem;
-    }
-    .text-2xl {
-      font-size: 1.5rem;
-    }
-    .flex {
-      display: flex;
-    }
-    .flex-col {
-      flex-direction: column;
-    }
-    .flex-grow {
-      flex-grow: 1;
-    }
-    .justify-between {
-      justify-content: space-between;
-    }
-    .items-center {
-      align-items: center;
-    }
-    .max-w-md {
-      max-width: 28rem;
-    }
-    .max-w-3xl {
-      max-width: 48rem;
-    }
-    .mx-auto {
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .mt-6 {
-      margin-top: 1.5rem;
-    }
-    .mt-10 {
-      margin-top: 2.5rem;
-    }
-    .ml-2 {
-      margin-left: 0.5rem;
-    }
-    .mr-2 {
-      margin-right: 0.5rem;
-    }
-    .text-white {
-      color: white;
-    }
-    .bg-gray-300 {
-      background-color: #d1d5db;
-    }
-    .text-red-500 {
-      color: #ef4444;
-    }
-    .text-yellow-500 {
-      color: #eab308;
-    }
-    .bg-green-500 {
-      background-color: #22c55e;
-    }
-    .bg-orange-500 {
-      background-color: #f97316;
-    }
-    .rounded-full {
-      border-radius: 9999px;
-    }
-    .cursor-pointer {
-      cursor: pointer;
-    }
-    .p-2 {
-      padding: 0.5rem;
-    }
-    .px-3 {
-      padding-left: 0.75rem;
-      padding-right: 0.75rem;
-    }
-    .py-1 {
-      padding-top: 0.25rem;
-      padding-bottom: 0.25rem;
-    }
-    .p-3 {
-      padding: 0.75rem;
-    }
-    .px-4 {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-    .py-2 {
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-    }
-    .px-6 {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-    }
-    .py-3 {
-      padding-top: 0.75rem;
-      padding-bottom: 0.75rem;
-    }
-    .gap-3 {
-      gap: 0.75rem;
-    }
-    .grid {
-      display: grid;
-    }
-    .grid-cols-1 {
-      grid-template-columns: repeat(1, minmax(0, 1fr));
-    }
-    .md\\:grid-cols-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .hidden {
-      display: none !important;
-    }
-    .choice-btn {
-      cursor: pointer;
-      border-radius: 0.5rem;
-      font-weight: 700;
-      font-size: 1rem;
-      user-select: none;
-      border: none;
-    }
-    .choice-btn.bg-green-500 {
-      background-color: #22c55e !important;
-      color: white !important;
-    }
-    .choice-btn.p-3 {
-      padding: 0.75rem;
-    }
-    .text-left {
-      text-align: left;
-    }
-    .bg-gray-200 {
-      background-color: #e5e7eb;
-    }
-    .hover\\:bg-gray-300:hover {
-      background-color: #d1d5db;
-    }
-    .hover\\:bg-green-700:hover {
-      background-color: #15803d;
-    }
-    .hover\\:bg-green-600:hover {
-      background-color: #16a34a;
-    }
-    .bg-blue-500 {
-      background-color: #3b82f6;
-    }
-    .hover\\:bg-blue-600:hover {
-      background-color: #2563eb;
-    }
-    .bg-red-500 {
-      background-color: #ef4444;
-    }
-    .hover\\:bg-red-600:hover {
-      background-color: #dc2626;
     }
   </style>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
@@ -368,7 +159,7 @@
   </header>
 
   <main>
-    <!-- Room Selection -->
+    <!-- Tela Seleção de Sala -->
     <section id="room-section">
       <h2>Bem-vindo ao Green Team Wins!</h2>
       <button id="create-room-btn"><i class="fas fa-plus"></i> Criar Nova Sala</button>
@@ -378,7 +169,7 @@
       </div>
     </section>
 
-    <!-- Nickname Section -->
+    <!-- Tela Apelido -->
     <section id="nickname-section" class="hidden">
       <h2>Entre na Sala</h2>
       <label for="nickname" style="display:block; margin-bottom:0.5rem;">Escolha seu apelido:</label>
@@ -386,7 +177,7 @@
       <button id="confirm-nickname-btn" style="margin-top:1rem;">Confirmar Apelido</button>
     </section>
 
-    <!-- Lobby Section -->
+    <!-- Tela Lobby -->
     <section id="lobby-section" class="hidden">
       <h2>Sala: <span id="room-code-display" class="font-mono"></span></h2>
       <h3>Jogadores na sala:</h3>
@@ -395,55 +186,49 @@
       <button id="start-game-btn" disabled>Iniciar Jogo</button>
     </section>
 
-    <!-- Game Section -->
-    <section id="game-section" class="hidden max-w-3xl mx-auto mt-6" style="max-width: 720px;">
-      <div style="background: white; border-radius: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); overflow: hidden;">
-        <div style="background: #1f2937; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <span><strong>Rodada: </strong><span id="current-round">1</span>/15</span>
-            <span style="margin: 0 0.5rem;">|</span>
-            <span id="timer" class="font-mono">30s</span>
-          </div>
-          <div id="team-indicator" style="padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight: 700;">Time: <span id="team-name">-</span></div>
+    <!-- Tela Jogo -->
+    <section id="game-section" class="hidden" style="max-width: 720px; margin: 2rem auto; background: white; border-radius: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); overflow: hidden; padding: 1rem;">
+      <div style="background: #1f2937; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; border-radius: 0.5rem 0.5rem 0 0;">
+        <div>
+          <span><strong>Rodada: </strong><span id="current-round">1</span>/15</span>
+          <span style="margin: 0 0.5rem;">|</span>
+          <span id="timer" class="font-mono">30s</span>
+        </div>
+        <div id="team-indicator" style="padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight: 700;">Time: <span id="team-name">-</span></div>
+      </div>
+
+      <div style="padding: 1.5rem; border-bottom: 1px solid #ddd;">
+        <h3 id="question-text" style="text-align:center; font-weight: 700; margin-bottom: 1rem;">Carregando pergunta...</h3>
+
+        <div id="multiple-choice-options" style="display:none; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem;"></div>
+
+        <div id="fill-blank-option" style="display:none; margin-top: 1rem;">
+          <input type="text" id="blank-answer" placeholder="Digite sua resposta..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; border: 1px solid #9ca3af; outline: none; font-size: 1rem;" />
         </div>
 
-        <div style="padding: 1.5rem; border-bottom: 1px solid #ddd;">
-          <h3 id="question-text" style="text-align:center; font-weight: 700; margin-bottom: 1rem;">Carregando pergunta...</h3>
-
-          <div id="multiple-choice-options" class="hidden" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem;">
-            <!-- Options aqui -->
-          </div>
-
-          <div id="fill-blank-option" class="hidden" style="margin-top: 1rem;">
-            <input type="text" id="blank-answer" placeholder="Digite sua resposta..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; border: 1px solid #9ca3af; outline: none; font-size: 1rem;" />
-          </div>
-
-          <div id="this-or-that-options" class="hidden" style="display:flex; justify-content:center; gap: 1rem; margin-top: 1rem;">
-            <button class="choice-btn" style="padding: 0.75rem 1.5rem; background-color:#3b82f6; color: white; border-radius: 0.5rem; font-weight: 700; border: none; cursor: pointer;">Opção 1</button>
-            <button class="choice-btn" style="padding: 0.75rem 1.5rem; background-color:#ef4444; color: white; border-radius: 0.5rem; font-weight: 700; border: none; cursor: pointer;">Opção 2</button>
-          </div>
-
-          <div style="margin-top: 1.5rem; text-align:center;">
-            <button id="submit-answer-btn" style="background-color:#16a34a; color:white; font-weight:700; padding: 0.5rem 1.5rem; border-radius: 0.5rem; border:none; cursor:pointer;" disabled>Enviar Resposta</button>
-          </div>
+        <div id="this-or-that-options" style="display:none; justify-content:center; gap: 1rem; margin-top: 1rem;">
+          <button class="choice-btn" style="padding: 0.75rem 1.5rem; background-color:#3b82f6; color: white; border-radius: 0.5rem; font-weight: 700; border: none; cursor: pointer;">Opção 1</button>
+          <button class="choice-btn" style="padding: 0.75rem 1.5rem; background-color:#ef4444; color: white; border-radius: 0.5rem; font-weight: 700; border: none; cursor: pointer;">Opção 2</button>
         </div>
 
-        <div style="padding: 1rem;">
-          <h3 style="font-weight:700; font-size:1.125rem; margin-bottom:0.75rem;">Placar</h3>
-          <div id="scoreboard" style="display:flex; flex-direction: column; gap: 0.5rem;">
-            <!-- Placar aqui -->
-          </div>
+        <div style="margin-top: 1.5rem; text-align:center;">
+          <button id="submit-answer-btn" style="background-color:#16a34a; color:white; font-weight:700; padding: 0.5rem 1.5rem; border-radius: 0.5rem; border:none; cursor:pointer;" disabled>Enviar Resposta</button>
         </div>
+      </div>
+
+      <div style="padding: 1rem;">
+        <h3 style="font-weight:700; font-size:1.125rem; margin-bottom:0.75rem;">Placar</h3>
+        <div id="scoreboard" style="display:flex; flex-direction: column; gap: 0.5rem;"></div>
       </div>
     </section>
 
-    <!-- Results Section -->
-    <section id="results-section" class="hidden max-w-md mx-auto mt-10">
-      <h2 style="color:#15803d; font-weight:700; margin-bottom:1.5rem; text-align:center;">Fim do Jogo!</h2>
-      <div id="winner-display" class="pulse-animation" style="margin-bottom: 1.5rem; padding: 1rem; border-radius: 0.5rem; text-align: center;"></div>
+    <!-- Tela Resultados -->
+    <section id="results-section" class="hidden" style="max-width: 400px; margin: 2rem auto; text-align:center;">
+      <h2 style="color:#15803d; font-weight:700; margin-bottom:1.5rem;">Fim do Jogo!</h2>
+      <div id="winner-display" class="pulse-animation" style="margin-bottom: 1.5rem; padding: 1rem; border-radius: 0.5rem;"></div>
       <h3 style="font-weight:700; margin-bottom:1rem;">Classificação Final:</h3>
       <div id="final-scores" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
-      <div style="text-align:center; margin-top:1.5rem;">
+      <div style="margin-top:1.5rem;">
         <button id="play-again-btn" style="background-color:#16a34a; color:white; font-weight:700; padding: 0.5rem 1.5rem; border-radius: 0.5rem; border:none; cursor:pointer;">Jogar Novamente</button>
       </div>
     </section>
@@ -454,34 +239,282 @@
   </footer>
 
 <script>
-  // === WebSocket ===
-  const socket = new WebSocket('wss://your-websocket-server.com'); // Substitua aqui!
-
-  socket.addEventListener('open', () => {
-    console.log('Conexão WebSocket estabelecida');
-  });
-
-  socket.addEventListener('message', event => {
-    const message = JSON.parse(event.data);
-    handleWebSocketMessage(message);
-  });
-
-  socket.addEventListener('close', () => {
-    console.log('Conexão WebSocket fechada');
-  });
-
-  // === Game State ===
-  const gameState = {
-    currentScreen: 'room',
+  // --- Estado do jogo local ---
+  let gameState = {
+    currentScreen: 'room', // room, nickname, lobby, game, results
     nickname: '',
     roomCode: '',
     players: [],
     isHost: false,
-    currentQuestion: {},
-    hasAnswered: false,
     currentRound: 1,
     maxRounds: 15,
     timer: 30,
     timerInterval: null,
-    team: null,
-    score
+    team: 'Verde',
+    hasAnswered: false,
+    scores: {}
+  };
+
+  // --- Referências DOM ---
+  const sections = {
+    room: document.getElementById('room-section'),
+    nickname: document.getElementById('nickname-section'),
+    lobby: document.getElementById('lobby-section'),
+    game: document.getElementById('game-section'),
+    results: document.getElementById('results-section'),
+  };
+  const usernameDisplay = document.getElementById('username-display');
+  const userInfoDiv = document.getElementById('user-info');
+  const logoutBtn = document.getElementById('logout-btn');
+  const createRoomBtn = document.getElementById('create-room-btn');
+  const joinRoomBtn = document.getElementById('join-room-btn');
+  const roomCodeInput = document.getElementById('room-code');
+  const nicknameInput = document.getElementById('nickname');
+  const confirmNicknameBtn = document.getElementById('confirm-nickname-btn');
+  const roomCodeDisplay = document.getElementById('room-code-display');
+  const playersListDiv = document.getElementById('players-list');
+  const playerCountSpan = document.getElementById('player-count');
+  const startGameBtn = document.getElementById('start-game-btn');
+  const currentRoundSpan = document.getElementById('current-round');
+  const timerSpan = document.getElementById('timer');
+  const teamNameSpan = document.getElementById('team-name');
+  const questionTextH3 = document.getElementById('question-text');
+  const multipleChoiceDiv = document.getElementById('multiple-choice-options');
+  const fillBlankDiv = document.getElementById('fill-blank-option');
+  const blankAnswerInput = document.getElementById('blank-answer');
+  const thisOrThatDiv = document.getElementById('this-or-that-options');
+  const submitAnswerBtn = document.getElementById('submit-answer-btn');
+  const scoreboardDiv = document.getElementById('scoreboard');
+  const winnerDisplayDiv = document.getElementById('winner-display');
+  const finalScoresDiv = document.getElementById('final-scores');
+  const playAgainBtn = document.getElementById('play-again-btn');
+
+  // --- Função para trocar telas ---
+  function showScreen(screenName) {
+    for (const key in sections) {
+      if (key === screenName) sections[key].classList.remove('hidden');
+      else sections[key].classList.add('hidden');
+    }
+    gameState.currentScreen = screenName;
+  }
+
+  // --- Gerar código aleatório para sala ---
+  function generateRoomCode() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let code = '';
+    for (let i = 0; i < 6; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+  }
+
+  // --- Atualizar lista de jogadores na UI ---
+  function updatePlayersList() {
+    playersListDiv.innerHTML = '';
+    gameState.players.forEach(p => {
+      const div = document.createElement('div');
+      div.textContent = p.nickname + (p.isHost ? ' (Host)' : '');
+      playersListDiv.appendChild(div);
+    });
+    playerCountSpan.textContent = gameState.players.length;
+    startGameBtn.disabled = !(gameState.isHost && gameState.players.length > 0);
+  }
+
+  // --- Simula adicionar jogador local (você) ---
+  function addLocalPlayer(nickname) {
+    gameState.nickname = nickname;
+    gameState.players.push({nickname, isHost: gameState.isHost});
+  }
+
+  // --- Evento criar sala ---
+  createRoomBtn.onclick = () => {
+    gameState.roomCode = generateRoomCode();
+    gameState.isHost = true;
+    addLocalPlayer('Host-' + Math.floor(Math.random() * 1000)); // provisório
+    roomCodeInput.value = gameState.roomCode;
+    roomCodeDisplay.textContent = gameState.roomCode;
+    updatePlayersList();
+    showScreen('nickname');
+  };
+
+  // --- Evento entrar na sala ---
+  joinRoomBtn.onclick = () => {
+    const code = roomCodeInput.value.trim().toUpperCase();
+    if (code.length !== 6) {
+      alert('Código da sala inválido! Deve ter 6 caracteres.');
+      return;
+    }
+    gameState.roomCode = code;
+    gameState.isHost = false;
+    showScreen('nickname');
+  };
+
+  // --- Confirmar apelido ---
+  confirmNicknameBtn.onclick = () => {
+    const nick = nicknameInput.value.trim();
+    if (nick.length === 0) {
+      alert('Digite um apelido válido.');
+      return;
+    }
+    gameState.nickname = nick;
+    if (!gameState.isHost) addLocalPlayer(nick);
+    roomCodeDisplay.textContent = gameState.roomCode;
+    showScreen('lobby');
+    // Simular jogadores no lobby (aqui você pode adicionar lógica para multiplayer real)
+    if (!gameState.isHost) {
+      gameState.players.push({nickname: nick, isHost: false});
+    } else {
+      // Se host, já tem o jogador dele adicionado no criar sala
+    }
+    updatePlayersList();
+  };
+
+  // --- Iniciar jogo ---
+  startGameBtn.onclick = () => {
+    if (gameState.players.length === 0) return alert('Não há jogadores para iniciar o jogo!');
+    gameState.currentRound = 1;
+    gameState.scores = {};
+    gameState.players.forEach(p => gameState.scores[p.nickname] = 0);
+    showScreen('game');
+    startRound();
+  };
+
+  // --- Função para começar a rodada e timer ---
+  function startRound() {
+    currentRoundSpan.textContent = gameState.currentRound;
+    teamNameSpan.textContent = gameState.team;
+    gameState.timer = 30;
+    timerSpan.textContent = gameState.timer + 's';
+    questionTextH3.textContent = 'Qual é a capital do Brasil?'; // Pergunta exemplo
+    multipleChoiceDiv.style.display = 'grid';
+    fillBlankDiv.style.display = 'none';
+    thisOrThatDiv.style.display = 'none';
+    submitAnswerBtn.disabled = false;
+    gameState.hasAnswered = false;
+
+    // Limpar opções anteriores
+    multipleChoiceDiv.innerHTML = '';
+    const options = ['Brasília', 'Rio de Janeiro', 'São Paulo', 'Salvador'];
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = opt;
+      btn.onclick = () => {
+        if (gameState.hasAnswered) return;
+        blankAnswerInput.value = '';
+        selectAnswer(btn);
+      };
+      multipleChoiceDiv.appendChild(btn);
+    });
+
+    // Timer
+    if (gameState.timerInterval) clearInterval(gameState.timerInterval);
+    gameState.timerInterval = setInterval(() => {
+      gameState.timer--;
+      timerSpan.textContent = gameState.timer + 's';
+      if (gameState.timer <= 0) {
+        clearInterval(gameState.timerInterval);
+        submitAnswerBtn.disabled = true;
+        alert('Tempo esgotado!');
+        nextRoundOrEnd();
+      }
+    }, 1000);
+  }
+
+  // --- Selecionar resposta ---
+  function selectAnswer(btn) {
+    if (gameState.hasAnswered) return;
+    // Remove seleção dos outros botões
+    Array.from(multipleChoiceDiv.children).forEach(b => b.style.backgroundColor = '#16a34a');
+    btn.style.backgroundColor = '#15803d';
+    submitAnswerBtn.disabled = false;
+    gameState.selectedAnswer = btn.textContent;
+  }
+
+  // --- Enviar resposta ---
+  submitAnswerBtn.onclick = () => {
+    if (gameState.hasAnswered) return;
+    if (!gameState.selectedAnswer) return alert('Escolha uma resposta antes de enviar.');
+    gameState.hasAnswered = true;
+    submitAnswerBtn.disabled = true;
+    clearInterval(gameState.timerInterval);
+
+    // Verifica se acertou (resposta correta é "Brasília")
+    if (gameState.selectedAnswer === 'Brasília') {
+      alert('Resposta correta!');
+      gameState.scores[gameState.nickname] += 1;
+    } else {
+      alert('Resposta errada!');
+    }
+    updateScoreboard();
+    nextRoundOrEnd();
+  };
+
+  // --- Atualizar placar ---
+  function updateScoreboard() {
+    scoreboardDiv.innerHTML = '';
+    for (const [nick, score] of Object.entries(gameState.scores)) {
+      const div = document.createElement('div');
+      div.textContent = `${nick}: ${score} pontos`;
+      scoreboardDiv.appendChild(div);
+    }
+  }
+
+  // --- Próxima rodada ou finalizar ---
+  function nextRoundOrEnd() {
+    if (gameState.currentRound < gameState.maxRounds) {
+      gameState.currentRound++;
+      setTimeout(() => {
+        startRound();
+      }, 1500);
+    } else {
+      endGame();
+    }
+  }
+
+  // --- Finalizar jogo ---
+  function endGame() {
+    showScreen('results');
+    // Mostrar vencedor (quem tem mais pontos)
+    let winner = null;
+    let maxScore = -1;
+    for (const [nick, score] of Object.entries(gameState.scores)) {
+      if (score > maxScore) {
+        maxScore = score;
+        winner = nick;
+      }
+    }
+    winnerDisplayDiv.textContent = `🏆 ${winner} venceu com ${maxScore} pontos! 🏆`;
+
+    // Mostrar ranking
+    const ranking = Object.entries(gameState.scores)
+      .sort((a,b) => b[1] - a[1]);
+    finalScoresDiv.innerHTML = '';
+    ranking.forEach(([nick, score], i) => {
+      const div = document.createElement('div');
+      div.textContent = `${i+1}. ${nick} — ${score} pontos`;
+      finalScoresDiv.appendChild(div);
+    });
+  }
+
+  // --- Jogar novamente ---
+  playAgainBtn.onclick = () => {
+    gameState.currentRound = 1;
+    gameState.scores = {};
+    gameState.players = [];
+    gameState.isHost = false;
+    gameState.nickname = '';
+    gameState.roomCode = '';
+    showScreen('room');
+  };
+
+  // --- Logout ---
+  logoutBtn.onclick = () => {
+    alert('Logout não implementado (simulação).');
+  };
+
+  // --- Inicializar tela ---
+  showScreen('room');
+</script>
+</body>
+</html>
